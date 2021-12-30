@@ -25,8 +25,8 @@ function _M.run(conf)
      -- Check if the API has a request_path and if it's being invoked with the path resolver
     local path_prefix = ""
 
-    if ngx.ctx.api.uris ~= nil then
-        for index, value in ipairs(ngx.ctx.api.uris) do
+    if ngx.ctx.route.paths ~= nil then
+        for index, value in ipairs(ngx.ctx.route.paths) do
             if pl_stringx.startswith(ngx.var.request_uri, value) then
                 path_prefix = value
                 break
@@ -165,7 +165,7 @@ function  handle_callback( conf, callback_url )
         if redirect_back then
             return ngx.redirect(redirect_back)
         else
-            return ngx.redirect(ngx.ctx.api.request_path)
+            return ngx.redirect(ngx.ctx.req_uri)
         end
     else
         ngx.say("User has denied access to the resources.")
